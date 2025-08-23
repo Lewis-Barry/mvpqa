@@ -57,21 +57,16 @@ header {
     gap: 10px;
 }
 
+.logo-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .logo-text {
     font-weight: 600;
     font-size: 1.5rem;
-}
-
-.logo-icon {
-    width: 40px;
-    height: 40px;
-    background-color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: var(--primary);
 }
 
 nav ul {
