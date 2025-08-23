@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Microsoft MVP Webinar Hub</title>
+    <title>Microsoft MVP Global Q&A</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,7 +12,7 @@
         <div class="container header-content">
             <div class="logo">
                 <img src="MVPAvatar.jpg" alt="Microsoft MVP" class="logo-img">
-                <div class="logo-text">MVP Webinar Hub</div>
+                <div class="logo-text">Microsoft MVP Global Q&A</div>
             </div>
             <nav>
                 <ul>
@@ -31,7 +32,7 @@
             <p>Join our community-driven webinars where Microsoft MVPs share their expertise and answer your questions on various Microsoft products and technologies.</p>
             <div class="btn-container">
                 <a href="#register" class="btn btn-primary">Register as Attendee</a>
-                <a href="#host" class="btn btn-secondary">Apply as MVP Host</a>
+                <a href="https://forms.office.com/e/8dYL4Ytu5n" class="btn btn-secondary">Apply as MVP Host</a>
             </div>
         </div>
     </section>
@@ -51,7 +52,7 @@
                     <div class="card-content">
                         <div class="card-icon">🎯</div>
                         <h3>Focused Topics</h3>
-                        <p>Each episode focuses on specific Microsoft technologies like Intune, Windows Management, Azure, and more.</p>
+                        <p>Each episode focuses on specific Microsoft technologies like Intune, XDR, Copilot, and more.</p>
                     </div>
                 </div>
                 <div class="card">
@@ -82,11 +83,11 @@
                 <div class="card">
                     <div class="card-content">
                         <h3>For MVP Hosts</h3>
-                        <p>1. Apply to host a session</p>
-                        <p>2. Choose your topic</p>
-                        <p>3. Schedule your webinar</p>
-                        <p>4. Promote to the community</p>
-                        <p>5. Host your session</p>
+                        <p>1. Apply as a host</p>
+                        <p>2. Get selected</p>
+                        <p>3. Join the webinar presync session</p>
+                        <p>4. Pick what you'd like to answer</p>
+                        <p>5. Join webinar as host</p>
                     </div>
                 </div>
             </div>
@@ -103,7 +104,7 @@
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">How often are webinars held? <span>+</span></div>
-                    <div class="faq-answer">We aim to host webinars regularly, typically every 2-4 weeks, covering different Microsoft technologies.</div>
+                    <div class="faq-answer">We aim to host webinars on the first week of each month. Times will vary so we can cover each timezone.</div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">Can I submit questions before the webinar? <span>+</span></div>
@@ -111,12 +112,36 @@
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">Are these webinars recorded? <span>+</span></div>
-                    <div class="faq-answer">Yes, recordings are made available to registered attendees after the live session.</div>
+                    <div class="faq-answer">
+                        Yes, recordings are made available to registered attendees after the live session on the 
+                        <a href="https://www.youtube.com/@WinAdmins" target="_blank" rel="noopener" class="faq-link">WinAdmins YouTube Channel</a>.
+                    </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">Is this an official Microsoft event? <span>+</span></div>
                     <div class="faq-answer">No, these webinars are community-driven initiatives by Microsoft MVPs and are not official Microsoft events.</div>
                 </div>
+                 <div class="faq-item">
+                    <div class="faq-question">Can we sponsor the event? <span>+</span></div>
+                    <div class="faq-answer">No.</div>
+                </div>
+                    <div class="faq-item">
+                    <div class="faq-question">Who is running this thing? <span>+</span></div>
+                    <div class="faq-answer">Lewis Barry MVP with support from Johannes Geir Kristjansson MVP and the WinAdmins community.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="webinar-carousel">
+        <div class="container">
+            <h2 class="section-title">Upcoming & Past Webinars</h2>
+            <div class="carousel">
+                <button class="carousel-btn left" id="carouselLeft">&#8592;</button>
+                <div class="carousel-track" id="carouselTrack">
+                    <!-- Cards will be injected by JS -->
+                </div>
+                <button class="carousel-btn right" id="carouselRight">&#8594;</button>
             </div>
         </div>
     </section>

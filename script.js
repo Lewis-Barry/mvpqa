@@ -1,3 +1,8 @@
+// Configuration
+const CONFIG = {
+    latestEventURL: 'https://events.teams.microsoft.com/event/f4e305c8-f7da-408d-a784-2b5f746271da@76264e2c-041e-4a52-b145-9f4bc624270c'
+};
+
 // Dark mode toggle functionality
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
@@ -65,4 +70,75 @@ document.querySelectorAll('nav a').forEach(anchor => {
             behavior: 'smooth'
         });
     });
+});
+
+// Webinar event data
+const webinars = [
+    {
+        title: " Episode 1: Intune, Windows Management",
+        date: "2025-10-01",
+        description: "Explore Microsoft Intune with MVPs. Live demos and Q&A.",
+        link: CONFIG.latestEventURL
+    },
+    {
+        title: "TBD",
+        date: "2025-11-01",
+        description: "Not yet decided",
+        link: "#register"
+    },
+        {
+        title: "TBD",
+        date: "2025-12-01",
+        description: "Not yet decided",
+        link: "#register"
+    },
+];
+
+// Render carousel cards
+function renderCarousel() {
+    const track = document.getElementById('carouselTrack');
+    const today = new Date();
+    track.innerHTML = '';
+    webinars.forEach(event => {
+        const eventDate = new Date(event.date);
+        const faded = eventDate < today;
+        const anticipating = event.description.includes("Not yet decided");
+        const card = document.createElement('div');
+        card.className = 'carousel-card' +
+            (faded ? ' faded' : '') +
+            (anticipating ? ' anticipating' : '');
+        card.innerHTML = `
+            <h3>${event.title}</h3>
+            <p><strong>Date:</strong> ${eventDate.toLocaleDateString()}</p>
+            <p>${event.description}</p>
+            ${
+                anticipating
+                ? `<div class="anticipating-msg">Details coming soon. Stay tuned!</div>`
+                : `<a href="${event.link}" class="btn btn-primary"${faded ? ' style="pointer-events:none;opacity:0.6;"' : ''}>${faded ? 'Event Ended' : 'Register'}</a>`
+            }
+        `;
+        track.appendChild(card);
+    });
+}
+
+// Carousel scroll buttons
+document.getElementById('carouselLeft').onclick = () => {
+    document.getElementById('carouselTrack').scrollBy({ left: -320, behavior: 'smooth' });
+};
+document.getElementById('carouselRight').onclick = () => {
+    document.getElementById('carouselTrack').scrollBy({ left: 320, behavior: 'smooth' });
+};
+
+// Update all registration links with the latest event URL
+function updateRegistrationLinks() {
+    const registrationLinks = document.querySelectorAll('a[href="#register"]');
+    registrationLinks.forEach(link => {
+        link.href = CONFIG.latestEventURL;
+    });
+}
+
+// Initialize carousel and registration links on page load
+document.addEventListener('DOMContentLoaded', () => {
+    renderCarousel();
+    updateRegistrationLinks();
 });
