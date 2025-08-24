@@ -253,6 +253,85 @@ body.dark-mode .features {
     background-color: #252423;
 }
 
+.product-showcase {
+    padding: 4rem 0;
+    background-color: var(--bg-light);
+}
+
+body.dark-mode .product-showcase {
+    background-color: var(--bg-dark);
+}
+
+.showcase-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--secondary);
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.dark-mode .showcase-subtitle {
+    color: #cccccc;
+}
+
+.product-logos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.logo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background-color: var(--card-light);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 120, 212, 0.1);
+}
+
+body.dark-mode .logo-item {
+    background-color: var(--card-dark);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.logo-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 120, 212, 0.15);
+    border-color: var(--primary);
+}
+
+.product-logo {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.logo-item:hover .product-logo {
+    transform: scale(1.1);
+}
+
+.logo-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    letter-spacing: 0.5px;
+}
+
+body.dark-mode .logo-label {
+    color: var(--text-light);
+}
+
 .faq-item {
     margin-bottom: 1.5rem;
     border-bottom: 1px solid #ddd;
@@ -454,5 +533,30 @@ body.dark-mode .carousel-card.anticipating {
     .carousel-card {
         min-width: 220px;
         padding: 12px;
+    }
+    
+    /* Product showcase mobile styles */
+    .product-logos {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+    
+    .logo-item {
+        padding: 1rem;
+    }
+    
+    .product-logo {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .logo-label {
+        font-size: 0.8rem;
+    }
+    
+    .showcase-subtitle {
+        font-size: 1rem;
+        margin-bottom: 2rem;
     }
 }
