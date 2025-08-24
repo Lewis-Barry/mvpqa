@@ -16,8 +16,6 @@
     --card-text: #222;
     --card-faded-bg: #f3f3f3;
     --card-faded-text: #888;
-    --carousel-btn-bg: #0078d4;
-    --carousel-btn-text: #fff;
 }
 
 * {
@@ -42,8 +40,6 @@ body.dark-mode {
     --card-text: #f3f3f3;
     --card-faded-bg: #333;
     --card-faded-text: #aaa;
-    --carousel-btn-bg: #444;
-    --carousel-btn-text: #fff;
 }
 
 .container {
@@ -210,10 +206,6 @@ body.dark-mode .section-title {
 body.dark-mode .card {
     background-color: var(--card-dark);
 }
-
-/*.card:hover {
-    transform: translateY(-5px);
-}*/
 
 .card-content {
     padding: 1.5rem;
@@ -474,237 +466,196 @@ footer {
     margin-top: 1rem;
 }
 
-#webinar-carousel {
-    position: relative;
+/* Webinar Grid Styles */
+.webinar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
 }
 
-#webinar-carousel .carousel {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin: 30px 0;
-    position: relative;
-}
-
-.carousel-container {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    border-radius: 12px;
-    flex: 1;
-}
-
-/* Default: pagination mode */
-.carousel-track {
-    display: flex;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    gap: 20px;
-    padding: 10px 0;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.carousel-track::-webkit-scrollbar {
-    display: none;
-}
-
-/* Scroll mode activated by JavaScript */
-.carousel-track.scroll-mode {
-    overflow-x: auto !important;
-    transform: none !important;
-    scroll-snap-type: x mandatory;
-    padding-right: 20px; /* Add some breathing room */
-}
-
-.carousel-track.scroll-mode .carousel-card {
-    scroll-snap-align: start;
-    flex-shrink: 0;
-}
-
-/* Enable scrolling on very small screens as fallback */
-@media (max-width: 480px) {
-    .carousel-container {
-        overflow-x: auto;
-    }
-    
-    .carousel-track {
-        overflow-x: auto !important;
-        transform: none !important;
-        scroll-snap-type: x mandatory;
-        padding-right: 20px;
-    }
-    
-    .carousel-card {
-        scroll-snap-align: start;
-    }
-}
-
-.carousel-card {
-    min-width: 320px;
-    flex-shrink: 0;
+.webinar-card {
     background: var(--card-bg);
     color: var(--card-text);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    padding: 24px;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 2rem;
+    transition: all 0.3s ease;
     border: 1px solid rgba(0, 120, 212, 0.1);
     position: relative;
     overflow: hidden;
 }
 
-.carousel-card::before {
+.webinar-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
-    height: 2px;
+    height: 3px;
     background: linear-gradient(90deg, transparent, var(--primary), transparent);
     transition: left 0.6s ease;
 }
 
-.carousel-card:hover::before {
+.webinar-card.upcoming:hover::before {
     left: 100%;
 }
 
-.carousel-card:hover {
-    transform: translateY(-4px);
+.webinar-card.upcoming:hover {
+    transform: translateY(-5px);
     box-shadow: 0 8px 30px rgba(0, 120, 212, 0.15);
     border-color: var(--primary);
 }
 
-.carousel-card.faded {
-    opacity: 0.6;
-    filter: grayscale(60%);
+.webinar-card.past {
+    opacity: 0.7;
+    filter: grayscale(40%);
     background: var(--card-faded-bg);
     color: var(--card-faded-text);
-    transform: scale(0.98);
 }
 
-.carousel-card.faded:hover {
-    transform: scale(0.98) translateY(-2px);
+.webinar-card.upcoming {
+    border: 2px solid var(--primary);
+    background: linear-gradient(135deg, var(--card-bg) 70%, rgba(0, 120, 212, 0.05) 100%);
+    position: relative;
 }
 
-.carousel-card.anticipating {
+.webinar-card.upcoming::after {
+    content: 'UPCOMING';
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--primary);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.webinar-card.tbd {
     border: 2px dashed #ff9800;
     background: linear-gradient(135deg, var(--card-bg) 70%, #fff3e0 100%);
     color: #ff9800;
-    box-shadow: 0 4px 25px rgba(255,152,0,0.12);
-    opacity: 1;
-    filter: none;
     position: relative;
-    animation: pulse 2s ease-in-out infinite alternate;
+    animation: pulse 3s ease-in-out infinite alternate;
 }
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 4px 25px rgba(255,152,0,0.12);
+        box-shadow: 0 4px 20px rgba(255,152,0,0.1);
     }
     100% {
-        box-shadow: 0 4px 25px rgba(255,152,0,0.25);
+        box-shadow: 0 4px 25px rgba(255,152,0,0.2);
     }
 }
 
-body.dark-mode .carousel-card {
+.webinar-card.tbd::after {
+    content: 'COMING SOON';
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #ff9800;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+body.dark-mode .webinar-card {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-body.dark-mode .carousel-card:hover {
+body.dark-mode .webinar-card.upcoming:hover {
     border-color: var(--primary);
 }
 
-body.dark-mode .carousel-card.anticipating {
+body.dark-mode .webinar-card.tbd {
     background: linear-gradient(135deg, var(--card-bg) 70%, #4e2e00 100%);
     color: #ffb74d;
     border-color: #ffb74d;
 }
 
-.anticipating-msg {
+.webinar-card h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    line-height: 1.3;
+}
+
+body.dark-mode .webinar-card h3 {
+    color: var(--text-light);
+}
+
+.webinar-card.tbd h3 {
+    color: inherit;
+}
+
+.webinar-date {
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.webinar-date::before {
+    content: '📅';
+    font-size: 1.1em;
+}
+
+body.dark-mode .webinar-date {
+    color: #cccccc;
+}
+
+.webinar-description {
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.webinar-status {
     font-style: italic;
     font-weight: 500;
-    margin-top: 12px;
+    margin-top: 1rem;
     color: inherit;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.5rem;
 }
 
-.anticipating-msg::before {
+.webinar-status.tbd::before {
     content: '✨';
     font-size: 1.2em;
 }
 
-.carousel-btn {
-    background: var(--card-light);
-    color: var(--primary);
-    border: 2px solid var(--primary);
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    cursor: pointer;
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2em;
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 0 4px 12px rgba(0, 120, 212, 0.2);
-    position: relative;
-    overflow: hidden;
-    z-index: 2;
+.webinar-status.past::before {
+    content: '✅';
+    font-size: 1.1em;
 }
 
-.carousel-btn:active {
-    transform: scale(0.95);
-}
-
-.carousel-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-    transform: none;
-    background: var(--card-faded-bg);
-    color: var(--card-faded-text);
-    border-color: var(--card-faded-text);
-    box-shadow: none;
-}
-
-body.dark-mode .carousel-btn {
-    background: var(--card-dark);
-    color: var(--primary);
-    border-color: var(--primary);
-}
-
-body.dark-mode .carousel-btn:disabled {
-    background: #333;
-    color: #666;
-    border-color: #666;
-}
-
-.carousel-indicators {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 20px;
-}
-
-.carousel-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--card-faded-text);
-    opacity: 0.3;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.carousel-dot.active {
-    background: var(--primary);
-    opacity: 1;
-    transform: scale(1.25);
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .webinar-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+    }
+    
+    .webinar-card {
+        padding: 1.5rem;
+    }
+    
+    .webinar-card.upcoming::after,
+    .webinar-card.tbd::after {
+        top: 0.75rem;
+        right: 0.75rem;
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -720,44 +671,6 @@ body.dark-mode .carousel-btn:disabled {
     }
     .hero p {
         font-size: 1rem;
-    }
-    
-    /* Enhanced carousel mobile styles */
-    #webinar-carousel .carousel {
-        gap: 12px;
-        margin: 20px 0;
-        padding: 0 10px;
-    }
-    
-    .carousel-track {
-        gap: 16px;
-        padding: 8px 0;
-    }
-    
-    .carousel-card {
-        min-width: 280px;
-        padding: 20px;
-        margin: 0 4px;
-    }
-    
-    .carousel-btn {
-        width: 44px;
-        height: 44px;
-        font-size: 1.1em;
-        box-shadow: 0 2px 8px rgba(0, 120, 212, 0.2);
-    }
-    
-    .carousel-btn:hover {
-        transform: scale(1.05);
-    }
-    
-    .carousel-indicators {
-        margin-top: 16px;
-    }
-    
-    .carousel-dot {
-        width: 10px;
-        height: 10px;
     }
     
     /* Product showcase mobile styles */
@@ -798,53 +711,6 @@ body.dark-mode .carousel-btn:disabled {
     .btn-vip {
         padding: 0.8rem 2rem;
         font-size: 1rem;
-    }
-}
-
-/* Small mobile devices */
-@media (max-width: 480px) {
-    #webinar-carousel .carousel {
-        gap: 8px;
-        margin: 16px 0;
-        padding: 0 8px;
-    }
-    
-    .carousel-card {
-        min-width: 260px;
-        padding: 16px;
-    }
-    
-    .carousel-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1em;
-    }
-    
-    .carousel-indicators {
-        margin-top: 12px;
-    }
-    
-    .carousel-dot {
-        width: 8px;
-        height: 8px;
-    }
-}
-
-/* Large screens */
-@media (min-width: 1200px) {
-    .carousel-track {
-        gap: 24px;
-    }
-    
-    .carousel-card {
-        min-width: 340px;
-        padding: 28px;
-    }
-    
-    .carousel-btn {
-        width: 52px;
-        height: 52px;
-        font-size: 1.3em;
     }
 }
 
