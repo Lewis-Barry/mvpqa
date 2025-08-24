@@ -37,11 +37,20 @@
         <div class="container">
             <h2 class="section-title">Upcoming & Past Webinars</h2>
             <div class="carousel">
-                <button class="carousel-btn left" id="carouselLeft">&#8592;</button>
-                <div class="carousel-track" id="carouselTrack">
-                    <!-- Cards will be injected by JS -->
+                <button class="carousel-btn left" id="carouselLeft" aria-label="Previous webinars">
+                    <span>‹</span>
+                </button>
+                <div class="carousel-container">
+                    <div class="carousel-track" id="carouselTrack">
+                        <!-- Cards will be injected by JS -->
+                    </div>
                 </div>
-                <button class="carousel-btn right" id="carouselRight">&#8594;</button>
+                <button class="carousel-btn right" id="carouselRight" aria-label="Next webinars">
+                    <span>›</span>
+                </button>
+            </div>
+            <div class="carousel-indicators" id="carouselIndicators">
+                <!-- Indicators will be injected by JS -->
             </div>
         </div>
     </section>
@@ -192,10 +201,10 @@
         <div class="container">
             <div class="cta-content">
                 <a href="https://forms.office.com/e/8dYL4Ytu5n" class="btn btn-vip">
-                    <span class="btn-text">Apply as an MVP host</span>
+                    <span class="btn-text">Apply to host</span>
                     <span class="btn-arrow">→</span>
                 </a>
-                <p class="cta-note">By invitation and application only</p>
+                <p class="cta-note">Active Microsoft MVPs only</p>
             </div>
         </div>
     </section>
@@ -212,6 +221,21 @@
             </div>
         </div>
     </footer>
+
+    <!-- Contact Popup -->
+    <div id="contactModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h3>Contact Information</h3>
+            <div class="contact-info">
+                <p>For any questions or queries about the MVP Global Q&A webinars, please contact:</p>
+                <div class="contact-details">
+                    <strong>Lewis Barry</strong><br>
+                    <a href="mailto:lewis@conditionalaccess.uk" class="contact-email">lewis@conditionalaccess.uk</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

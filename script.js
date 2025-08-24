@@ -94,11 +94,102 @@ const webinars = [
     },
 ];
 
+// Carousel state
+let currentIndex = 0;
+let cardsPerView = 1;
+
+// Calculate cards per view based on screen size and container width
+function calculateCardsPerView() {
+    const container = document.querySelector('.carousel-container');
+    const cardWidth = 320;
+    const gap = 20;
+    const minVisibleWidth = 100; // Minimum width needed to see that a card exists
+    
+    if (!container) return 1;
+    
+    const containerWidth = container.offsetWidth;
+    
+    // Calculate how many complete cards can fit
+    const completeCards = Math.floor((containerWidth + gap) / (cardWidth + gap));
+    
+    // Check if we have room for a partial card that's meaningfully visible
+    const remainingSpace = containerWidth - (completeCards * (cardWidth + gap) - gap);
+    const canShowPartial = remainingSpace >= minVisibleWidth;
+    
+    // If we can show a meaningful partial card, allow scrolling
+    // Otherwise, stick to complete cards only
+    if (canShowPartial && completeCards < webinars.length) {
+        // Enable scrolling mode for this case
+        return 'scroll';
+    }
+    
+    return Math.max(1, completeCards);
+}
+
+// Update carousel indicators
+function updateIndicators() {
+    const indicatorsContainer = document.getElementById('carouselIndicators');
+    
+    // Don't show indicators in scroll mode
+    if (cardsPerView === 'scroll') {
+        indicatorsContainer.innerHTML = '';
+        return;
+    }
+    
+    const totalSlides = Math.max(1, Math.ceil(webinars.length / cardsPerView));
+    
+    indicatorsContainer.innerHTML = '';
+    
+    // Only show indicators if there are multiple slides
+    if (totalSlides > 1) {
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = `carousel-dot ${i === currentIndex ? 'active' : ''}`;
+            dot.addEventListener('click', () => goToSlide(i));
+            indicatorsContainer.appendChild(dot);
+        }
+    }
+}
+
+// Update button states
+function updateButtons() {
+    const leftBtn = document.getElementById('carouselLeft');
+    const rightBtn = document.getElementById('carouselRight');
+    
+    // In scroll mode, button states are handled by scroll event listener
+    if (cardsPerView === 'scroll') {
+        return;
+    }
+    
+    const maxIndex = Math.max(0, webinars.length - cardsPerView);
+    
+    leftBtn.disabled = currentIndex <= 0;
+    rightBtn.disabled = currentIndex >= maxIndex;
+}
+
+// Go to specific slide
+function goToSlide(index) {
+    const track = document.getElementById('carouselTrack');
+    const maxIndex = Math.max(0, webinars.length - cardsPerView);
+    
+    currentIndex = Math.max(0, Math.min(index, maxIndex));
+    
+    const cardWidth = 320;
+    const gap = 20;
+    const offset = currentIndex * (cardWidth + gap);
+    
+    track.style.transform = `translateX(-${offset}px)`;
+    
+    updateButtons();
+    updateIndicators();
+}
+
 // Render carousel cards
 function renderCarousel() {
     const track = document.getElementById('carouselTrack');
     const today = new Date();
     track.innerHTML = '';
+    
     webinars.forEach(event => {
         const eventDate = new Date(event.date);
         const faded = eventDate < today;
@@ -119,15 +210,145 @@ function renderCarousel() {
         `;
         track.appendChild(card);
     });
+    
+    // Update carousel state
+    cardsPerView = calculateCardsPerView();
+    
+    // Apply appropriate CSS class based on mode
+    if (cardsPerView === 'scroll') {
+        track.classList.add('scroll-mode');
+    } else {
+        track.classList.remove('scroll-mode');
+    }
+    
+    updateButtons();
+    updateIndicators();
 }
 
-// Carousel scroll buttons
-document.getElementById('carouselLeft').onclick = () => {
-    document.getElementById('carouselTrack').scrollBy({ left: -320, behavior: 'smooth' });
-};
-document.getElementById('carouselRight').onclick = () => {
-    document.getElementById('carouselTrack').scrollBy({ left: 320, behavior: 'smooth' });
-};
+// Enhanced carousel navigation with smooth transitions
+function initializeCarousel() {
+    const leftBtn = document.getElementById('carouselLeft');
+    const rightBtn = document.getElementById('carouselRight');
+    const carouselTrack = document.getElementById('carouselTrack');
+    
+    // Check if we should use scroll mode
+    const shouldUseScrollMode = () => {
+        return window.innerWidth <= 480 || cardsPerView === 'scroll';
+    };
+    
+    leftBtn.addEventListener('click', () => {
+        if (shouldUseScrollMode()) {
+            carouselTrack.scrollBy({ left: -340, behavior: 'smooth' });
+        } else {
+            goToSlide(currentIndex - 1);
+        }
+    });
+    
+    rightBtn.addEventListener('click', () => {
+        if (shouldUseScrollMode()) {
+            carouselTrack.scrollBy({ left: 340, behavior: 'smooth' });
+        } else {
+            goToSlide(currentIndex + 1);
+        }
+    });
+    
+    // Touch/swipe support for mobile
+    let startX = 0;
+    let isDragging = false;
+    
+    carouselTrack.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+    }, { passive: true });
+    
+    carouselTrack.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        // Don't prevent default on scroll mode to allow native scrolling
+        if (!shouldUseScrollMode()) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+    
+    carouselTrack.addEventListener('touchend', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        
+        // Only handle swipe gestures in pagination mode
+        if (shouldUseScrollMode()) return;
+        
+        const endX = e.changedTouches[0].clientX;
+        const diff = startX - endX;
+        const threshold = 50;
+        
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                goToSlide(currentIndex + 1);
+            } else {
+                goToSlide(currentIndex - 1);
+            }
+        }
+    }, { passive: true });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        const carousel = document.getElementById('webinar-carousel');
+        const rect = carousel.getBoundingClientRect();
+        const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (isInView) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (shouldUseScrollMode()) {
+                    carouselTrack.scrollBy({ left: -340, behavior: 'smooth' });
+                } else {
+                    goToSlide(currentIndex - 1);
+                }
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                if (shouldUseScrollMode()) {
+                    carouselTrack.scrollBy({ left: 340, behavior: 'smooth' });
+                } else {
+                    goToSlide(currentIndex + 1);
+                }
+            }
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        const oldCardsPerView = cardsPerView;
+        cardsPerView = calculateCardsPerView();
+        
+        if (oldCardsPerView !== cardsPerView) {
+            currentIndex = 0;
+            if (!shouldUseScrollMode() && typeof cardsPerView === 'number') {
+                goToSlide(0);
+            } else {
+                // Reset transform for scroll mode
+                carouselTrack.style.transform = 'translateX(0px)';
+            }
+            updateIndicators();
+            updateButtons();
+        }
+    });
+    
+    // Update scroll buttons
+    const updateScrollButtons = () => {
+        if (shouldUseScrollMode()) {
+            leftBtn.disabled = carouselTrack.scrollLeft <= 5; // Small tolerance
+            rightBtn.disabled = carouselTrack.scrollLeft >= carouselTrack.scrollWidth - carouselTrack.clientWidth - 5;
+        }
+    };
+    
+    // Listen for scroll events in scroll mode
+    carouselTrack.addEventListener('scroll', updateScrollButtons);
+    
+    // Initial button state update
+    setTimeout(() => {
+        updateScrollButtons();
+        updateButtons();
+    }, 100);
+}
 
 // Update all registration links with the latest event URL
 function updateRegistrationLinks() {
@@ -137,8 +358,48 @@ function updateRegistrationLinks() {
     });
 }
 
+// Contact Modal functionality
+function initializeContactModal() {
+    const contactLink = document.querySelector('nav a[href="#contact"]');
+    const modal = document.getElementById('contactModal');
+    const modalClose = document.getElementById('modalClose');
+    
+    // Open modal when contact link is clicked
+    if (contactLink) {
+        contactLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+    }
+    
+    // Close modal when close button is clicked
+    modalClose.addEventListener('click', () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+    });
+    
+    // Close modal when clicking outside the modal content
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+    });
+    
+    // Close modal when pressing Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+    });
+}
+
 // Initialize carousel and registration links on page load
 document.addEventListener('DOMContentLoaded', () => {
     renderCarousel();
+    initializeCarousel();
     updateRegistrationLinks();
+    initializeContactModal();
 });
