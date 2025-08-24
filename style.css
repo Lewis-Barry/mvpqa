@@ -518,6 +518,7 @@ footer {
     border: 2px solid var(--primary);
     background: linear-gradient(135deg, var(--card-bg) 70%, rgba(0, 120, 212, 0.05) 100%);
     position: relative;
+    padding-right: 3rem; /* Add extra right padding to prevent badge overlap */
 }
 
 .webinar-card.upcoming::after {
@@ -540,6 +541,7 @@ footer {
     color: #ff9800;
     position: relative;
     animation: pulse 3s ease-in-out infinite alternate;
+    padding-right: 3rem; /* Add extra right padding to prevent badge overlap */
 }
 
 @keyframes pulse {
@@ -647,6 +649,11 @@ body.dark-mode .webinar-date {
     
     .webinar-card {
         padding: 1.5rem;
+    }
+    
+    .webinar-card.upcoming,
+    .webinar-card.tbd {
+        padding-right: 2.5rem; /* Adjust right padding for mobile */
     }
     
     .webinar-card.upcoming::after,
