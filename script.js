@@ -1,6 +1,7 @@
 // Configuration
 const CONFIG = {
-    latestEventURL: 'https://events.teams.microsoft.com/event/f4e305c8-f7da-408d-a784-2b5f746271da@76264e2c-041e-4a52-b145-9f4bc624270c'
+    latestEventURL: 'https://events.teams.microsoft.com/event/f4e305c8-f7da-408d-a784-2b5f746271da@76264e2c-041e-4a52-b145-9f4bc624270c',
+    submitQuestionsURL: 'https://forms.office.com/e/YOUR_QUESTIONS_FORM_ID' // You can update this URL
 };
 
 // Dark mode toggle functionality
@@ -78,19 +79,22 @@ const webinars = [
         title: "Episode 1: Intune, Windows Management",
         date: "2025-10-01",
         description: "Explore Microsoft Intune with MVPs. Live demos and Q&A.",
-        link: "https://events.teams.microsoft.com/event/f4e305c8-f7da-408d-a784-2b5f746271da@76264e2c-041e-4a52-b145-9f4bc624270c"
+        link: "https://events.teams.microsoft.com/event/f4e305c8-f7da-408d-a784-2b5f746271da@76264e2c-041e-4a52-b145-9f4bc624270c",
+        submitQuestionsLink: "https://forms.office.com/e/6CaiD2gN0d"
     },
     {
         title: "TBD",
         date: "2025-11-01", 
         description: "Not yet decided",
-        link: "#register"
+        link: "#register",
+        submitQuestionsLink: CONFIG.submitQuestionsURL
     },
     {
         title: "TBD",
         date: "2025-12-01",
         description: "Not yet decided", 
-        link: "#register"
+        link: "#register",
+        submitQuestionsLink: CONFIG.submitQuestionsURL
     }
 ];
 
@@ -142,7 +146,12 @@ function renderWebinars() {
                 <div class="webinar-status past">This event has concluded</div>
             `;
         } else {
-            cardHTML += `<a href="${webinar.link}" class="btn btn-primary">Register Now</a>`;
+            cardHTML += `
+                <div class="webinar-actions">
+                    <a href="${webinar.link}" class="btn btn-primary">Register Now</a>
+                    <a href="${webinar.submitQuestionsLink}" class="btn btn-secondary">Submit Questions</a>
+                </div>
+            `;
         }
         
         card.innerHTML = cardHTML;
